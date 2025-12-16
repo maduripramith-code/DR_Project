@@ -3,6 +3,7 @@ import os
 from dr_model_code import predict_retinopathy
 
 app = Flask(__name__)
+
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -12,6 +13,7 @@ def index():
 
     if request.method == "POST":
         image = request.files.get("image")
+
         if image:
             image_path = os.path.join(UPLOAD_FOLDER, image.filename)
             image.save(image_path)
@@ -40,4 +42,5 @@ def index():
     )
 
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
