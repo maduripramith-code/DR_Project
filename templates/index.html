@@ -8,203 +8,139 @@
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background: #040b2b; /* darker blue */
+            background-color: #020b1f; /* darker blue */
             color: white;
         }
 
         h1 {
             text-align: center;
-            font-size: 46px;
+            font-size: 40px;
             font-weight: 900;
-            margin-bottom: 30px;
-        }
-
-        /* ===== LANDING PAGE ===== */
-        #landing {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #enter-btn {
-            padding: 15px 45px;
-            font-size: 22px;
-            background: #4fc3f7; /* sky blue */
-            color: black;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        #enter-btn:hover {
-            background: orange;
-            color: white;
-        }
-
-        /* ===== MAIN PAGE ===== */
-        #main-page {
-            display: none;
-            padding: 30px;
+            margin: 30px 0;
         }
 
         .container {
             display: flex;
-            gap: 30px;
+            width: 95%;
+            margin: auto;
         }
 
         .left, .right {
             width: 50%;
-            background: #07143f;
-            padding: 25px;
-            border-radius: 10px;
+            padding: 30px;
         }
 
         input, select {
-            width: 100%;
+            width: 95%;
             padding: 10px;
-            margin: 8px 0 15px;
+            margin: 8px 0;
             border-radius: 5px;
             border: none;
+            font-size: 14px;
         }
 
-        label {
-            font-weight: bold;
-        }
-
-        button.predict-btn {
-            width: 100%;
+        button {
+            background-color: #4cc9f0;
+            color: black;
+            font-size: 16px;
             padding: 12px;
-            font-size: 18px;
-            background: #4fc3f7;
+            width: 97%;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
         }
 
-        button.predict-btn:hover {
-            background: orange;
-            color: white;
+        button:hover {
+            background-color: orange;
+            color: black;
         }
 
-        .result-box {
-            background: #050f3a;
-            padding: 20px;
+        .output-box {
+            background-color: #031633;
+            padding: 30px;
             border-radius: 10px;
+            min-height: 250px;
         }
 
-        .output {
-            background: #101c3d;
-            padding: 12px;
-            border-radius: 6px;
+        .output-title {
+            font-size: 22px;
+            font-weight: bold;
             margin-bottom: 15px;
+            color: #4cc9f0;
+        }
+
+        .result {
             font-size: 18px;
+            margin: 15px 0;
+        }
+
+        .placeholder {
+            color: #bbbbbb;
+            font-style: italic;
         }
     </style>
-
-    <script>
-        function showMainPage() {
-            document.getElementById("landing").style.display = "none";
-            document.getElementById("main-page").style.display = "block";
-        }
-    </script>
 </head>
 
 <body>
 
-<!-- ===== LANDING PAGE ===== -->
-<div id="landing">
-    <h1>DIABETIC RETINOPATHY DETECTION</h1>
-    <button id="enter-btn" onclick="showMainPage()">ENTER</button>
-</div>
+<h1>DIABETIC RETINOPATHY DETECTION</h1>
 
-<!-- ===== MAIN PAGE ===== -->
-<div id="main-page">
-    <h1>DIABETIC RETINOPATHY DETECTION</h1>
+<div class="container">
 
-    <div class="container">
+    <!-- INPUT SECTION -->
+    <div class="left">
+        <form method="POST" enctype="multipart/form-data">
 
-        <!-- ===== INPUT SECTION ===== -->
-        <div class="left">
-            <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" required>
 
-                <label>Upload Retinal Image</label>
-                <input type="file" name="image" required>
+            <input type="number" name="age" placeholder="Age" required>
+            <input type="number" name="bp" placeholder="Blood Pressure" required>
+            <input type="number" name="glucose" placeholder="Glucose Level" required>
+            <input type="number" step="0.1" name="bmi" placeholder="BMI" required>
+            <input type="number" step="0.1" name="hba1c" placeholder="HbA1c" required>
+            <input type="number" name="triglycerides" placeholder="Triglycerides" required>
+            <input type="number" name="microalbuminuria" placeholder="Microalbuminuria" required>
 
-                <label>Age</label>
-                <input type="number" name="age" required>
+            <select name="family_history">
+                <option value="1">Family History: Yes</option>
+                <option value="0">Family History: No</option>
+            </select>
 
-                <label>Blood Pressure</label>
-                <input type="number" name="bp" required>
+            <select name="alcohol">
+                <option value="1">Alcohol: Yes</option>
+                <option value="0">Alcohol: No</option>
+            </select>
 
-                <label>Glucose Level</label>
-                <input type="number" name="glucose" required>
+            <select name="smoking">
+                <option value="1">Smoking: Yes</option>
+                <option value="0">Smoking: No</option>
+            </select>
 
-                <label>BMI</label>
-                <input type="number" step="0.1" name="bmi" required>
+            <select name="eye_side">
+                <option value="0">Left Eye</option>
+                <option value="1">Right Eye</option>
+            </select>
 
-                <label>HbA1c</label>
-                <input type="number" step="0.1" name="hba1c" required>
-
-                <label>Triglycerides</label>
-                <input type="number" name="triglycerides" required>
-
-                <label>Microalbuminuria</label>
-                <input type="number" name="microalbuminuria" required>
-
-                <label>Family History</label>
-                <select name="family_history">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-
-                <label>Alcohol</label>
-                <select name="alcohol">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-
-                <label>Smoking</label>
-                <select name="smoking">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-
-                <label>Eye Side</label>
-                <select name="eye_side">
-                    <option value="0">Left</option>
-                    <option value="1">Right</option>
-                </select>
-
-                <button type="submit" class="predict-btn">PREDICT</button>
-            </form>
-        </div>
-
-        <!-- ===== OUTPUT SECTION ===== -->
-        <div class="right">
-            <div class="result-box">
-                <h2>Prediction Result</h2>
-
-                {% if stage %}
-                    <p><b>Stage of Retinopathy</b></p>
-                    <div class="output">{{ stage }}</div>
-
-                    <p><b>Risk Level</b></p>
-                    <div class="output">{{ risk }}</div>
-
-                    <p><b>Safety Precautions</b></p>
-                    <div class="output">{{ precautions }}</div>
-                {% else %}
-                    <p>Please enter patient details and click <b>PREDICT</b>.</p>
-                {% endif %}
-            </div>
-        </div>
-
+            <button type="submit">PREDICT</button>
+        </form>
     </div>
+
+    <!-- OUTPUT SECTION -->
+    <div class="right">
+        <div class="output-box">
+            <div class="output-title">Prediction Result</div>
+
+            {% if stage %}
+                <div class="result"><b>Stage:</b> {{ stage }}</div>
+                <div class="result"><b>Risk Level:</b> {{ risk }}</div>
+                <div class="result"><b>Safety Precautions:</b><br>{{ precautions }}</div>
+            {% else %}
+                <div class="placeholder">No prediction yet. Please enter details and click Predict.</div>
+            {% endif %}
+        </div>
+    </div>
+
 </div>
 
 </body>
