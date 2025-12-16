@@ -7,15 +7,52 @@
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
-            background-color: #020b1f; /* Dark blue */
+            background-color: #020b1f;
             color: white;
         }
 
-        h1 {
+        /* Landing Page */
+        #landing {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             text-align: center;
-            font-size: 40px;
+        }
+
+        #landing h1 {
+            font-size: 50px;
             font-weight: 900;
-            margin: 30px 0;
+            margin-bottom: 50px;
+        }
+
+        #enter-btn {
+            background-color: #4cc9f0;
+            color: black;
+            font-size: 20px;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        #enter-btn:hover {
+            background-color: orange;
+            color: black;
+        }
+
+        /* Main Form Page */
+        #main-form {
+            display: none;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
         }
 
         .container {
@@ -41,7 +78,7 @@
             font-size: 14px;
         }
 
-        button {
+        button.submit-btn {
             background-color: #4cc9f0;
             color: black;
             font-size: 16px;
@@ -54,7 +91,7 @@
             transition: 0.3s;
         }
 
-        button:hover {
+        button.submit-btn:hover {
             background-color: orange;
             color: black;
         }
@@ -86,69 +123,84 @@
 </head>
 <body>
 
-<h1>Diabetic Retinopathy Detection</h1>
+<!-- Landing Page -->
+<div id="landing">
+    <h1>DIABETIC RETINOPATHY DETECTION</h1>
+    <button id="enter-btn">ENTER</button>
+</div>
 
-<div class="container">
+<!-- Main Form Page -->
+<div id="main-form">
+    <h2>Enter Patient Details</h2>
+    <div class="container">
+        <!-- INPUT SECTION -->
+        <div class="left">
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" name="image" accept="image/*" required>
+                <input type="number" name="age" placeholder="Age" min="0" required>
+                <input type="number" name="bp" placeholder="Blood Pressure" min="0" required>
+                <input type="number" name="glucose" placeholder="Glucose Level" min="0" required>
+                <input type="number" step="0.1" name="bmi" placeholder="BMI" min="0" required>
+                <input type="number" step="0.1" name="hba1c" placeholder="HbA1c" min="0" required>
+                <input type="number" name="triglycerides" placeholder="Triglycerides" min="0" required>
+                <input type="number" name="microalbuminuria" placeholder="Microalbuminuria" min="0" required>
 
-    <!-- INPUT SECTION -->
-    <div class="left">
-        <form method="POST" enctype="multipart/form-data">
+                <select name="family_history" required>
+                    <option value="" disabled selected>Select Family History</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
 
-            <input type="file" name="image" accept="image/*" required>
+                <select name="alcohol" required>
+                    <option value="" disabled selected>Alcohol Consumption</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
 
-            <input type="number" name="age" placeholder="Age" min="0" required>
-            <input type="number" name="bp" placeholder="Blood Pressure" min="0" required>
-            <input type="number" name="glucose" placeholder="Glucose Level" min="0" required>
-            <input type="number" step="0.1" name="bmi" placeholder="BMI" min="0" required>
-            <input type="number" step="0.1" name="hba1c" placeholder="HbA1c" min="0" required>
-            <input type="number" name="triglycerides" placeholder="Triglycerides" min="0" required>
-            <input type="number" name="microalbuminuria" placeholder="Microalbuminuria" min="0" required>
+                <select name="smoking" required>
+                    <option value="" disabled selected>Smoking</option>
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
 
-            <select name="family_history" required>
-                <option value="" disabled selected>Select Family History</option>
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
+                <select name="eye_side" required>
+                    <option value="" disabled selected>Select Eye</option>
+                    <option value="0">Left Eye</option>
+                    <option value="1">Right Eye</option>
+                </select>
 
-            <select name="alcohol" required>
-                <option value="" disabled selected>Alcohol Consumption</option>
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
+                <button type="submit" class="submit-btn">PREDICT</button>
+            </form>
+        </div>
 
-            <select name="smoking" required>
-                <option value="" disabled selected>Smoking</option>
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
+        <!-- OUTPUT SECTION -->
+        <div class="right">
+            <div class="output-box">
+                <div class="output-title">Prediction Result</div>
 
-            <select name="eye_side" required>
-                <option value="" disabled selected>Select Eye</option>
-                <option value="0">Left Eye</option>
-                <option value="1">Right Eye</option>
-            </select>
-
-            <button type="submit">PREDICT</button>
-        </form>
-    </div>
-
-    <!-- OUTPUT SECTION -->
-    <div class="right">
-        <div class="output-box">
-            <div class="output-title">Prediction Result</div>
-
-            <!-- Flask/Django template logic -->
-            {% if stage %}
-                <div class="result"><b>Stage:</b> {{ stage }}</div>
-                <div class="result"><b>Risk Level:</b> {{ risk }}</div>
-                <div class="result"><b>Safety Precautions:</b><br>{{ precautions }}</div>
-            {% else %}
-                <div class="placeholder">No prediction yet. Please enter details and click Predict.</div>
-            {% endif %}
+                <!-- Flask/Django template logic -->
+                {% if stage %}
+                    <div class="result"><b>Stage:</b> {{ stage }}</div>
+                    <div class="result"><b>Risk Level:</b> {{ risk }}</div>
+                    <div class="result"><b>Safety Precautions:</b><br>{{ precautions }}</div>
+                {% else %}
+                    <div class="placeholder">No prediction yet. Please enter details and click Predict.</div>
+                {% endif %}
+            </div>
         </div>
     </div>
-
 </div>
+
+<script>
+    const enterBtn = document.getElementById('enter-btn');
+    const landing = document.getElementById('landing');
+    const mainForm = document.getElementById('main-form');
+
+    enterBtn.addEventListener('click', () => {
+        landing.style.display = 'none';
+        mainForm.style.display = 'block';
+    });
+</script>
 
 </body>
 </html>
